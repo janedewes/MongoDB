@@ -1,0 +1,110 @@
+MongoDB
+
+- Rodar Terminal: mongod
+- Abrir Terminal (shell): mongo
+
+- Studio3T
+- Compass
+
+---------------------------------------------- Comandos -------------------------------------------
+https://docs.mongodb.com/manual/reference/command/
+
+
+- Ver BD:
+show dbs;
+
+- Ver collections (tabelass)
+show collections;
+
+- Usar DB:
+use teste_aula; 
+
+
+- Criar uma coleção (Tabela):
+db.createCollection('nome-da-collection')
+
+- Excluir:
+use nome_database;
+db.dropDatabase();
+db.nome_da_collection.drop();
+
+
+- Inserir regístros:
+db.users.insertOne( { name: "Foo", age: 34, cars: [ "BMW 320d", "Audi R8" ] } ); 
+db.users.insertOne( { name: "TFC-test", age: 31, cars: [ "BMW 320d", "Audi R8" ] } ); 
+
+- Procurar conteúdo: 
+db.users.find();
+
+- Mostrar coleções (tabelas)
+show collections; 
+
+- Inserir regístros: 
+db.customers.insert({ name: "Honey", age: 25, cars: [ "Audi R8" ] }); 
+
+- Se a coleção não existe o MongoDB retorna "false"
+db.exemplo.drop();
+
+
+------------------------------------------
+- Inserir UM registro na tabela customers:
+db.customers.insertOne( { name: "Abhi", age: 34, cars: [ "BMW 320d", "Audi R8" ] } );
+
+- Inserir VÁRIOS registroS na customer:
+db.customers.insertMany([
+ { name: "Midhuna", age: 23, cars: [ "BMW 320d", "Audi R8" ], place:"Amaravati" },
+ { name: "Akhil", age: 24, cars: [ "Audo A7", "Agera R" ], place:"New York" },
+ { name: "Honey", age: 25, cars: [ "Audi R8" ] },
+ { name: "Paul", age: 25, cars: [ "Audi R8" ] },
+ { name: "Stuart", age: 25, cars: [ "Audi R8" ] }
+]);
+------------------------------------------
+
+- ESSE COMANDO É EQUIVALENTE AO SELECT * (recupera todos documentos de uma collection)
+use nome_da_collection;
+db.customers.find({});
+
+------------------------------------------
+- O criteria é como se fosse uma variavel, passando o find ele retorna o critério:
+criteria={age:23};
+db.customers.find(criteria); 
+------------------------------------------
+
+- Equivalente no SQL usamos SELECT CAMPO1, CAMPO2, CAMPO3: (1 está ligado, 0 não está ligado)
+projection_doc={"name":1,"age":1,"cars":1,"place":1,_id:0};
+db.customers.find({},projection_doc);
+db.customers.find({}, {"name":1, "age":1});
+db.customers.find({}, {"name":0, "age":0});
+------------------------------------------
+
+
+criteria={name:"Akhil"};
+db.customers.find(criteria);
+update={name:"Akhil xxx",age:28};
+db.customers.update(criteria,update);
+db.customers.find(criteria);
+
+- Delete documentos
+db.collection_nome.remove(CRITERIA, JUST_ONE)
+
+------------------------------------------
+criteria={age:25};
+db.customers.find(criteria).count();
+update={$set:{cars: "Audi R8 xxx" }};
+options={multi:true};
+db.customers.update(criteria,update,options);
+db.customers.find(criteria);
+
+
+db.customers.find().limit(2);
+db.customers.find().skip(2); #  skip salta registros
+
+
+db.customers.find().sort({"age":1});
+db.customers.find().sort({});
+db.customers.find().sort({"age":-1,"name":1});
+
+- Deixar os retornos mais apresentáveis: (exibe em formato de documento)
+db.customers.find().pretty();
+db.customers.find().limit(2).pretty();
+--------------------------------------------------------------------------------------------
